@@ -57,10 +57,7 @@ async def handle_new_message(event):
             if chat.id == 1880564029:
                 destination = chat
         except:
-            continue
-
-    
-    
+            continue  
 
     if str(event.chat_id) == fonte: # sender_chat_id == prova_id
         await client.forward_messages(destination, event.message)

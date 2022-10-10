@@ -1,3 +1,5 @@
+from io import BytesIO
+from tkinter import Image
 import traceback
 from telethon import TelegramClient, events
 import asyncio
@@ -17,8 +19,9 @@ prova_destinazione = '-1001880564029' # -791394339
 
 # bot_mto_id = tmb.TelegramBot(, '')
 
-# FONTI
-fonte = '-1001638054050'
+# FONTI -1638054050
+fonte1 = '-1001638054050'
+fonte2 = '-1001896425972'
 
 api_id = '16645531'
 api_hash = '97be68b1fe05da4d818da2818bcb90d8'
@@ -32,7 +35,7 @@ client = TelegramClient(phone, api_id, api_hash)
     #         groups.append(chat)
     # except:
     #     continue
-
+photo = None
 chats = []
 last_date = None
 chunk_size = 200
@@ -58,12 +61,21 @@ async def handle_new_message(event):
                 destination = chat
         except:
             continue  
-
-    if str(event.chat_id) == fonte: # sender_chat_id == prova_id
-        if event.photo:
-            image_base = event.message.media
-            image_bytes = image_base.photo.bytes
-        await client.forward_messages(destination, event.message)
+    # print(str(event.chat_id))
+    if str(event.chat_id) == fonte1 or str(event.chat_id) == fonte2: # sender_chat_id == prova_id
+        try:
+            await event.download_media(file='prova.png')
+            photo = True
+        except Exception:
+            traceback.print_exc()
+            print('NO MEDIA IN THE MESSAGE.')
+            photo = False
+        if photo:
+            await client.send_message(destination, event.message)
+            await client.send_file(destination, 'prova.png')
+            photo = False
+        if not photo:
+            await client.send_message(destination, event.message)
 
         
 

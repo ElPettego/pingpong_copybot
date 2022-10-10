@@ -40,7 +40,7 @@ groups = []
 
 @client.on(events.NewMessage)
 async def handle_new_message(event):
-    print(event.chat_id, event.chat)
+    print(event)
     destination = None
     result = await client(GetDialogsRequest(
         offset_id=0,
@@ -60,7 +60,11 @@ async def handle_new_message(event):
             continue  
 
     if str(event.chat_id) == fonte: # sender_chat_id == prova_id
+        if event.photo:
+            image_base = event.message.media
+            image_bytes = image_base.photo.bytes
         await client.forward_messages(destination, event.message)
+
         
 
 client.start()

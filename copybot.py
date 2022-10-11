@@ -43,7 +43,6 @@ groups = []
 
 @client.on(events.NewMessage)
 async def handle_new_message(event):
-    print(event)
     destination = None
     result = await client(GetDialogsRequest(
         offset_id=0,
@@ -63,9 +62,12 @@ async def handle_new_message(event):
             continue  
     # print(str(event.chat_id))
     if str(event.chat_id) == fonte1 or str(event.chat_id) == fonte2: # sender_chat_id == prova_id
-
-        await client.send_message(destination, event.message)
-
+        print(event)
+        await client.send_message(destination, str(event.message.message))
+        try:
+            await client.send_file(destination, event.media)
+        except Exception:
+            print('NO MEDIA IN THE MESSAGE')
 
         
 

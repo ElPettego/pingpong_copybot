@@ -64,10 +64,12 @@ async def handle_new_message(event):
     if str(event.chat_id) == fonte1 or str(event.chat_id) == fonte2: # sender_chat_id == prova_id
         print(event)
         await client.send_message(destination, str(event.message.message))
-        try:
-            await client.send_file(destination, event.media)
-        except Exception:
-            print('NO MEDIA IN THE MESSAGE')
+        if event.media != None:
+            try:
+                await event.download_media(file="prova.png")
+                await client.send_file(destination, "prova.png")
+            except Exception:
+                print('NO MEDIA IN THE MESSAGE')
 
         
 

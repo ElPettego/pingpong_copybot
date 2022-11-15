@@ -25,3 +25,17 @@ class TelegramBot:
         updater.start_polling()
         # time.sleep(0.2)
         updater.stop() 
+        
+    def send_file(self, path_to_file):
+        updater = Updater(self.bot_token, use_context=True)
+        dp = updater.dispatcher
+        bot = telegram.Bot(token=self.bot_token)
+        status = bot.send_document(chat_id=self.chat_id, 
+                                   document=open(path_to_file, 'rb'),
+                                   filename=path_to_file,
+                                   parse_mode=telegram.ParseMode.HTML)
+        time.sleep(0.2)
+        print(f'INVIANDO FILE A {self.chat_id}.')
+        updater.start_polling()
+        time.sleep(0.2)
+        updater.stop()

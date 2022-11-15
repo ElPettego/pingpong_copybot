@@ -1,11 +1,5 @@
-from io import BytesIO
-from tkinter import Image
-import traceback
+import telegram_message_bot as tmb
 from telethon import TelegramClient, events
-import asyncio
-import time
-import math
-import random as rndm
 from telethon.tl.functions.messages import GetDialogsRequest
 from telethon.tl.types import InputPeerEmpty
 
@@ -27,6 +21,7 @@ api_id = '16645531'
 api_hash = '97be68b1fe05da4d818da2818bcb90d8'
 phone = '+393333045341'
 
+tmb_o = tmb.TelegramBot('-1001880564029', '5772267951:AAFo8gordFvJEyKGM4BkhVrqepMMgquFx_s')
 client = TelegramClient(phone, api_id, api_hash)
 
 
@@ -63,11 +58,13 @@ async def handle_new_message(event):
     # print(str(event.chat_id))
     if str(event.chat_id) == fonte1 or str(event.chat_id) == fonte2: # sender_chat_id == prova_id
         print(event)
-        await client.send_message(destination, str(event.message.message))
+        # await client.send_message(destination, str(event.message.message))
+        tmb_o.emit(str(event.message.message))
         if event.media != None:
             try:
                 await event.download_media(file="prova.png")
-                await client.send_file(destination, "prova.png")
+                # await client.send_file(destination, "prova.png")
+                tmb_o.send_file('prova.png')
             except Exception:
                 print('NO MEDIA IN THE MESSAGE')
 
